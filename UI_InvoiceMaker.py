@@ -553,8 +553,8 @@ class Ui_MainWindow(object):
     def save_file_dialog(self):
         '''Asks the user where they'd like to save the output file'''
         filename_template = (f"Invoice{self.invoice_no_box.text()}_"
-                            f"{time.strftime('%d%m%Y', time.localtime(time.time()))}.png")
-        filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_template, "PNG Files (*.png);;All Files (*)")
+                            f"{time.strftime('%d%m%Y', time.localtime(time.time()))}.pdf")
+        filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_template, "PDF Files (*.pdf);;All Files (*)")
         if filename:
             return filename[0]
         else:
@@ -597,7 +597,8 @@ class Ui_MainWindow(object):
 
 
     def generate_invoice(self, output_filename):
-        '''Writes the information on to the template image and generates a png'''
+        '''Writes the information on to the template image and generates a temp png which is
+            then converted to a pdf'''
         template_file = Image.open("bits/Invoice Template.png")
         
         text_to_add = self.gather_text()
@@ -607,12 +608,22 @@ class Ui_MainWindow(object):
             add_text.text(element.coordinates, element.text, font=element.font, fill=element.font_colour,
                           anchor=element.anchor, align=element.align)
 
-        template_file.save(output_filename)
+        temp_png = os.path.dirname(output_filename) + ".temp.png"
+        template_file.save(temp_png)
+        self.convert_to_PDF(temp_png, output_filename)
 
         if os.path.isfile(output_filename):
             self.success_dialog(True)
         else:
             self.success_dialog(False)
+
+
+    def convert_to_PDF(self, temp_png, output_filename):
+        '''Convert the temporary png to a pdf and delete the png'''
+        file_to_convert = Image.open(temp_png)
+        output_file = file_to_convert.convert('RGB')
+        output_file.save(output_filename)
+        os.remove(temp_png)
 
 
     def success_dialog(self, success):
@@ -696,9 +707,9 @@ class TextLayer:
         self.align = align
 
         if font == "medium":
-            self.font = ImageFont.truetype("bits/Montserrat-Medium.ttf", font_size)
+            self.font = ImageFont.truetype("bits/Font-Medium.ttf", font_size)
         elif font == "bold":
-            self.font = ImageFont.truetype("bits/Montserrat-Bold.ttf", font_size)
+            self.font = ImageFont.truetype("bits/Font-Bold.ttf", font_size)
 
         if font_colour == "black":
             self.font_colour = (0, 0, 0)
