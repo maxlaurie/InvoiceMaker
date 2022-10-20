@@ -5,12 +5,9 @@
 # Generates an invoice from the GUI form/config.ini
 
 from PyQt6 import QtCore, QtGui, QtWidgets
-from PyQt6.QtWidgets import QMessageBox
-from PyQt6.QtWidgets import QFileDialog
+from PyQt6.QtWidgets import QMessageBox, QFileDialog, QRadioButton
 from configparser import ConfigParser
-from PIL import Image
-from PIL import ImageDraw
-from PIL import ImageFont
+from PIL import Image, ImageDraw, ImageFont
 import time
 import re
 import sys
@@ -33,9 +30,7 @@ class Ui_MainWindow(object):
         # Style Sheets
 
         label_style_sheet = ("background-color: rgba(255, 255, 255, 0);")
-        box_style_sheet = ("background-color: rgb(255, 255, 255);\n"
-"selection-background-color: rgb(78, 193, 207);\n"
-"color: rgb(77, 77, 77);")
+        box_style_sheet = ("background-color: rgb(255, 255, 255);selection-background-color: rgb(78, 193, 207);color: rgb(77, 77, 77);")
 
         small_boxes_font = QtGui.QFont()
         small_boxes_font.setPointSize(13)
@@ -257,44 +252,44 @@ class Ui_MainWindow(object):
 
         description_box_font = QtGui.QFont()
         description_box_font.setPointSize(16)
-        description_box_max_length = 95
+        description_box_max_length = 75
 
         self.description_label = QtWidgets.QLabel(MainWindow)
         self.description_label.setGeometry(QtCore.QRect(20, 660, 91, 16))
         self.description_label.setStyleSheet(label_style_sheet)
 
         self.invoice_item_desc_box_1 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_1.setGeometry(QtCore.QRect(20, 690, 551, 41))
+        self.invoice_item_desc_box_1.setGeometry(QtCore.QRect(20, 690, 581, 41))
         self.invoice_item_desc_box_1.setFont(description_box_font)
         self.invoice_item_desc_box_1.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_1.setMaxLength(description_box_max_length)
 
         self.invoice_item_desc_box_2 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_2.setGeometry(QtCore.QRect(20, 740, 551, 41))
+        self.invoice_item_desc_box_2.setGeometry(QtCore.QRect(20, 740, 581, 41))
         self.invoice_item_desc_box_2.setFont(description_box_font)
         self.invoice_item_desc_box_2.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_2.setMaxLength(description_box_max_length)
 
         self.invoice_item_desc_box_3 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_3.setGeometry(QtCore.QRect(20, 790, 551, 41))
+        self.invoice_item_desc_box_3.setGeometry(QtCore.QRect(20, 790, 581, 41))
         self.invoice_item_desc_box_3.setFont(description_box_font)
         self.invoice_item_desc_box_3.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_3.setMaxLength(description_box_max_length)
 
         self.invoice_item_desc_box_4 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_4.setGeometry(QtCore.QRect(20, 840, 551, 41))
+        self.invoice_item_desc_box_4.setGeometry(QtCore.QRect(20, 840, 581, 41))
         self.invoice_item_desc_box_4.setFont(description_box_font)
         self.invoice_item_desc_box_4.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_4.setMaxLength(description_box_max_length)
 
         self.invoice_item_desc_box_5 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_5.setGeometry(QtCore.QRect(20, 890, 551, 41))
+        self.invoice_item_desc_box_5.setGeometry(QtCore.QRect(20, 890, 581, 41))
         self.invoice_item_desc_box_5.setFont(description_box_font)
         self.invoice_item_desc_box_5.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_5.setMaxLength(description_box_max_length)
 
         self.invoice_item_desc_box_6 = QtWidgets.QLineEdit(MainWindow)
-        self.invoice_item_desc_box_6.setGeometry(QtCore.QRect(20, 940, 551, 41))
+        self.invoice_item_desc_box_6.setGeometry(QtCore.QRect(20, 940, 581, 41))
         self.invoice_item_desc_box_6.setFont(description_box_font)
         self.invoice_item_desc_box_6.setStyleSheet(box_style_sheet)
         self.invoice_item_desc_box_6.setMaxLength(description_box_max_length)
@@ -368,23 +363,39 @@ class Ui_MainWindow(object):
 
         # Buttons
 
-        button_style_sheet = ("background-color: rgba(194, 255, 244, 125);\n"
-"color: rgb(77, 77, 77);")
+        radio_button_style_sheet = ("background-color: rgba(194, 255, 244, 0);color: rgb(77, 77, 77);")
+
+        self.format_selector_png = QRadioButton(MainWindow)
+        self.format_selector_png.setGeometry(QtCore.QRect(260, 1000, 61, 20))
+        self.format_selector_png.setStyleSheet(radio_button_style_sheet)
+        self.format_selector_png.setChecked(False)
+        
+        self.format_selector_pdf = QRadioButton(MainWindow)
+        self.format_selector_pdf.setGeometry(QtCore.QRect(340, 1000, 61, 20))
+        self.format_selector_pdf.setStyleSheet(radio_button_style_sheet)
+        self.format_selector_pdf.setChecked(True)
+        
+        self.format_selector_both = QRadioButton(MainWindow)
+        self.format_selector_both.setGeometry(QtCore.QRect(420, 1000, 61, 20))
+        self.format_selector_both.setStyleSheet(radio_button_style_sheet)
+        self.format_selector_both.setChecked(False)
+
+        button_style_sheet = ("background-color: rgba(194, 255, 244, 125);color: rgb(77, 77, 77);")
 
         self.clear_button = QtWidgets.QPushButton(MainWindow, clicked= lambda: self.clear_form())
         self.clear_button.setGeometry(QtCore.QRect(20, 1010, 100, 32))
         self.clear_button.setStyleSheet(button_style_sheet)
 
         self.next_invoice_button = QtWidgets.QPushButton(MainWindow, clicked= lambda: self.next_invoice())
-        self.next_invoice_button.setGeometry(QtCore.QRect(130, 1010, 100, 32))
+        self.next_invoice_button.setGeometry(QtCore.QRect(140, 1010, 100, 32))
         self.next_invoice_button.setStyleSheet(button_style_sheet)
 
         self.calculate_total_button = QtWidgets.QPushButton(MainWindow, clicked= lambda: self.calculate_total(True))
-        self.calculate_total_button.setGeometry(QtCore.QRect(470, 1010, 100, 32))
+        self.calculate_total_button.setGeometry(QtCore.QRect(500, 1010, 100, 32))
         self.calculate_total_button.setStyleSheet(button_style_sheet)
 
-        self.generate_invoice_button = QtWidgets.QPushButton(MainWindow, clicked= lambda: self.pre_generate_checks())
-        self.generate_invoice_button.setGeometry(QtCore.QRect(240, 1010, 221, 32))
+        self.generate_invoice_button = QtWidgets.QPushButton(MainWindow, clicked= lambda: self.generate_invoice())
+        self.generate_invoice_button.setGeometry(QtCore.QRect(260, 1030, 221, 21))
         self.generate_invoice_button.setStyleSheet(button_style_sheet)
 
         self.retranslateUi(MainWindow)
@@ -401,9 +412,6 @@ class Ui_MainWindow(object):
         self.description_label.setText(_translate("MainWindow", "Description"))
         self.total_label.setText(_translate("MainWindow", "Total"))
         self.clear_button.setText(_translate("MainWindow", "Clear"))
-        self.next_invoice_button.setText(_translate("MainWindow", "Next Invoice"))
-        self.calculate_total_button.setText(_translate("MainWindow", "Calculate Total"))
-        self.generate_invoice_button.setText(_translate("MainWindow", "Generate!"))
         self.company_name_label.setText(_translate("MainWindow", "Company Name"))
         self.company_address_label.setText(_translate("MainWindow", "Company Address"))
         self.company_bank_account_no_label.setText(_translate("MainWindow", "Bank Account No."))
@@ -415,6 +423,13 @@ class Ui_MainWindow(object):
         self.company_website_label.setText(_translate("MainWindow", "Company Website URL"))
         self.payment_terms_label.setText(_translate("MainWindow", "Payment Terms"))
         self.company_email_label.setText(_translate("MainWindow", "Company Email Address"))
+        self.next_invoice_button.setText(_translate("MainWindow", "Next Invoice"))
+        self.calculate_total_button.setText(_translate("MainWindow", "Calculate Total"))
+        self.generate_invoice_button.setText(_translate("MainWindow", "Generate!"))
+        self.format_selector_png.setText(_translate("MainWindow", "PNG"))
+        self.format_selector_pdf.setText(_translate("MainWindow", "PDF"))
+        self.format_selector_both.setText(_translate("MainWindow", "BOTH"))
+
 
 
     ############################################################
@@ -550,15 +565,117 @@ class Ui_MainWindow(object):
             return True
 
 
-    def save_file_dialog(self):
-        '''Asks the user where they'd like to save the output file'''
+    def save_file_dialog(self, format_choice):
+        '''Generates a filename template and asks the user where they'd like to save the output file
+            If the choice of output format is both png and pdf, the file selection only asks for a pdf filename
+            Whatever the choice, the returned filename has no extension, so it can be added at time of file creation'''
+        if format_choice == "BOTH":
+            format_choice = "PDF"
+        
         filename_template = (f"Invoice{self.invoice_no_box.text()}_"
-                            f"{time.strftime('%d%m%Y', time.localtime(time.time()))}.pdf")
-        filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_template, "PDF Files (*.pdf);;All Files (*)")
-        if filename:
-            return filename[0]
+                            f"{time.strftime('%d%m%Y', time.localtime(time.time()))}.{format_choice.casefold()}")
+        output_filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_template,
+                            f"{format_choice} Files (*.{format_choice.casefold()});;All Files (*)")
+        if output_filename:
+            return os.path.splitext(output_filename[0])[0]
         else:
             return
+
+
+    def return_format_choice(self):
+        '''Return the name of the selected format radio button'''
+        for radio_button in (self.format_selector_png, self.format_selector_pdf, self.format_selector_both):
+            if radio_button.isChecked():
+                return radio_button.text()
+        # if somehow none are selected
+        return "BOTH"
+
+
+    def generate_invoice(self):
+        '''Final checks and the output file is generated'''
+        if self.form_and_total_mismatch_check() is True:
+            pass
+        else:
+            return
+
+        format_choice = self.return_format_choice()
+        output_filename = self.save_file_dialog(format_choice)
+        if os.path.isdir(os.path.dirname(output_filename)):
+            pass
+        else:
+            return
+
+        match format_choice:
+            case "PNG":
+                png_filename = f"{output_filename}.png"
+                self.generate_png(png_filename)
+
+                self.success_dialog(png_filename)
+
+            case "PDF":
+                png_filename = f"{output_filename}.png"
+                self.generate_png(png_filename)
+
+                pdf_filename = f"{output_filename}.pdf"
+                self.generate_pdf(png_filename, pdf_filename)
+                
+                os.remove(png_filename)
+                self.success_dialog(pdf_filename)
+
+            case "BOTH":
+                png_filename = f"{output_filename}.png"
+                self.generate_png(png_filename)
+
+                pdf_filename = f"{output_filename}.pdf"
+                self.generate_pdf(png_filename, pdf_filename)
+
+                self.success_dialog(png_filename, pdf_filename)
+
+        self.save_all_to_config()
+
+
+    def generate_png(self, output_filename):
+        '''Writes the information on to the template image and generates a PNG'''
+        template_file = Image.open("bits/Invoice Template.png")
+        
+        text_to_add = self.gather_text()
+        add_text = ImageDraw.Draw(template_file)
+        
+        for element in text_to_add:
+            add_text.text(element.coordinates, element.text, font=element.font, fill=element.font_colour,
+                          anchor=element.anchor, align=element.align)
+
+        template_file.save(output_filename)
+
+
+    def generate_pdf(self, output_png, output_pdf_filename):
+        '''Creates a PDF from the PNG'''
+        file_to_convert = Image.open(output_png)
+        output_pdf = file_to_convert.convert('RGB')
+        output_pdf.save(output_pdf_filename)
+
+
+    def success_dialog(self, *files):
+        '''Alerts the user to whether the output file(s) were created or not'''
+        box = QMessageBox()
+        box.setWindowTitle("Invoice Maker")
+        box.setStandardButtons(QMessageBox.StandardButton.Ok)
+
+        if len(files) > 1:
+            plural_or_not = "Invoices"
+        else:
+            plural_or_not = "Invoice"
+
+        for file in files:
+            if os.path.isfile(file):
+                box.setText(f"{plural_or_not} generated!")
+                box.setIcon(QMessageBox.Icon.Information)
+            else:
+                box.setText(f"Unable to generate {plural_or_not.casefold()} :(")
+                box.setIcon(QMessageBox.Icon.Critical)
+                break
+
+        box.exec()
 
 
     def save_all_to_config(self):
@@ -577,68 +694,6 @@ class Ui_MainWindow(object):
         self.update_config("payment_info", "sort_code", self.company_bank_sort_code_box.text())
         self.update_config("payment_info", "currency", self.transaction_currency_box.text())
         self.update_config("payment_info", "payment_terms", self.payment_terms_box.text())
-
-
-    def pre_generate_checks(self):
-        '''Final checks before the output file is generated'''
-        if self.form_and_total_mismatch_check() is True:
-            pass
-        else:
-            return
-
-        output_filename = self.save_file_dialog()
-        if os.path.isdir(os.path.dirname(output_filename)):
-            pass
-        else:
-            return
-
-        self.save_all_to_config()
-        self.generate_invoice(output_filename)
-
-
-    def generate_invoice(self, output_filename):
-        '''Writes the information on to the template image and generates a temp png which is
-            then converted to a pdf'''
-        template_file = Image.open("bits/Invoice Template.png")
-        
-        text_to_add = self.gather_text()
-        add_text = ImageDraw.Draw(template_file)
-        
-        for element in text_to_add:
-            add_text.text(element.coordinates, element.text, font=element.font, fill=element.font_colour,
-                          anchor=element.anchor, align=element.align)
-
-        temp_png = os.path.dirname(output_filename) + ".temp.png"
-        template_file.save(temp_png)
-        self.convert_to_PDF(temp_png, output_filename)
-
-        if os.path.isfile(output_filename):
-            self.success_dialog(True)
-        else:
-            self.success_dialog(False)
-
-
-    def convert_to_PDF(self, temp_png, output_filename):
-        '''Convert the temporary png to a pdf and delete the png'''
-        file_to_convert = Image.open(temp_png)
-        output_file = file_to_convert.convert('RGB')
-        output_file.save(output_filename)
-        os.remove(temp_png)
-
-
-    def success_dialog(self, success):
-        '''Alerts the user to whether the output file was created or not'''
-        box = QMessageBox()
-        box.setWindowTitle("Invoice Maker")
-        box.setStandardButtons(QMessageBox.StandardButton.Ok)
-
-        if success is True:
-            box.setText("Invoice generated!")
-        else:
-            box.setText("Unable to generate invoice :(")
-            box.setIcon(QMessageBox.Icon.Critical)
-
-        box.exec()
 
 
     def gather_text(self):
