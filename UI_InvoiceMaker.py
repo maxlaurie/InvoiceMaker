@@ -43,7 +43,7 @@ class Ui_MainWindow(object):
         self.company_logo = QtWidgets.QLabel(MainWindow)
         self.company_logo.setGeometry(QtCore.QRect(20, 20, 760, 140))
         self.company_logo.setStyleSheet(label_style_sheet)
-        self.company_logo.setPixmap(QtGui.QPixmap("bits/GuiBanner.png"))
+        self.company_logo.setPixmap(QtGui.QPixmap("GuiBanner.png"))
         self.company_logo.setScaledContents(True)
 
         # Company Name
@@ -636,7 +636,7 @@ class Ui_MainWindow(object):
 
     def generate_png(self, output_filename):
         '''Writes the information on to the template image and generates a PNG'''
-        template_file = Image.open("bits/Invoice Template.png")
+        template_file = Image.open("Invoice Template.png")
         
         text_to_add = self.gather_text()
         add_text = ImageDraw.Draw(template_file)
@@ -762,9 +762,9 @@ class TextLayer:
         self.align = align
 
         if font == "medium":
-            self.font = ImageFont.truetype("bits/Font-Medium.ttf", font_size)
+            self.font = ImageFont.truetype("Font-Medium.ttf", font_size)
         elif font == "bold":
-            self.font = ImageFont.truetype("bits/Font-Bold.ttf", font_size)
+            self.font = ImageFont.truetype("Font-Bold.ttf", font_size)
 
         if font_colour == "black":
             self.font_colour = (0, 0, 0)
