@@ -1,6 +1,6 @@
 # Main_InvoiceMaker.py
-# Version 1.0
-# Max Laurie 18/10/2022
+# Version 1.1
+# Max Laurie 12/12/2022
 
 # Generates an invoice from the GUI form/config.ini
 

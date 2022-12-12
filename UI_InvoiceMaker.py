@@ -1,8 +1,12 @@
 # UI_InvoiceMaker.py
-# Version 1.0
-# Max Laurie 18/10/2022
+# Version 1.1
+# Max Laurie 12/12/2022
 
 # Generates an invoice from the GUI form/config.ini
+
+# 1.1 Changelog
+# Changed default save location to user's home folder
+# Added config item for save location so last location is remembered
 
 from PyQt6 import QtCore, QtGui, QtWidgets
 from PyQt6.QtWidgets import QMessageBox, QFileDialog, QRadioButton
@@ -457,6 +461,20 @@ class Ui_MainWindow(object):
                 }
 
 
+    def return_save_location(self):
+        '''Returns the saved save location from config.ini
+            If it doesn't exist, returns user's home folder'''
+        config = ConfigParser()
+        config.read("config.ini")
+        config.sections()
+        save_location = config["invoice"]["save_location"]
+
+        if os.path.isdir(save_location) is False:
+            return (os.path.expanduser("~"))
+        else:
+            return save_location
+
+
     def update_config(self, section, subsection, value):
         '''Writes a new value into the config (config.ini)'''
         config = ConfigParser()
@@ -567,16 +585,21 @@ class Ui_MainWindow(object):
 
     def save_file_dialog(self, format_choice):
         '''Generates a filename template and asks the user where they'd like to save the output file
+            Default save location is pulled from the config, or if that doesn't exist, the user's home folder
             If the choice of output format is both png and pdf, the file selection only asks for a pdf filename
             Whatever the choice, the returned filename has no extension, so it can be added at time of file creation'''
         if format_choice == "BOTH":
             format_choice = "PDF"
+
+        save_location = self.return_save_location()
         
         filename_template = (f"Invoice{self.invoice_no_box.text()}_"
                             f"{time.strftime('%d%m%Y', time.localtime(time.time()))}.{format_choice.casefold()}")
-        output_filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_template,
+        filename_and_location = os.path.join(save_location, filename_template)
+        output_filename = QFileDialog.getSaveFileName(None, "Save Invoice", filename_and_location,
                             f"{format_choice} Files (*.{format_choice.casefold()});;All Files (*)")
         if output_filename:
+            self.update_config("invoice", "save_location", os.path.split(output_filename[0])[0])
             return os.path.splitext(output_filename[0])[0]
         else:
             return
